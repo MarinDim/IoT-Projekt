@@ -9,6 +9,7 @@
 WebServer server(80);
 
 #define MAX_POINTS 100
+#define buzz 4
 
 float werte[MAX_POINTS];
 unsigned long zeit[MAX_POINTS];
@@ -137,6 +138,7 @@ setInterval(updateChart, 1000);
 
 void setup() {
   Serial.begin(115200);
+  pinMode(buzz, OUTPUT);
 
   WiFi.mode(WIFI_AP_STA);
   WiFi.begin("Magenta995041", "745hrga7dh5j");
@@ -201,6 +203,12 @@ void loop() {
   if(millis()-discordZeit>10000){//Nur jede 10 Sekunden
     discordNachricht(String(myData.nachricht));
     discordZeit=millis();
+  }
+  if(myData.nachricht<50){
+    tone(buzz, 1000);
+  }
+  else{
+    noTone(buzz);
   }
   
   server.handleClient();
